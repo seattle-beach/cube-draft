@@ -1,10 +1,6 @@
 [git-together]
 	domain = pivotal.io
-	domain = pivotal.io
 [git-together "authors"]
-	jh = "James Holden; jholden"
-	nn = "Naomi Nagata; nnagata"
-	ca = "Chrisjen Avasarala; avasarala@un.gov"
 	jh = "James Holden; jholden"
 	nn = "Naomi Nagata; nnagata"
 	ca = "Chrisjen Avasarala; avasarala@un.gov"
