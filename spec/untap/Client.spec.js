@@ -22,12 +22,12 @@ describe('UntapClient', () => {
             reply: {
                 status:  200,
                 headers: { "content-type": "application/json" },
-                body:    JSON.stringify({cards: [
+                body:    JSON.stringify([
                     {
                         name: "some-card", 
                         image: "some-image",
                     }
-                ]})
+                ])
             }
         })
 

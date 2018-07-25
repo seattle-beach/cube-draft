@@ -7,7 +7,7 @@ export class UntapClient {
     getPack() {
         return this.axios.get(this.baseUrl + "/pack")
             .then((response) => {
-                return response.data.cards;
+                return response.data;
             })
     }
 }
