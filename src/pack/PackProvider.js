@@ -20,7 +20,6 @@ export class PackProvider extends Component {
     }
 
     render() {
-        console.log(this.state)
         if (this.state.loading) {
             return <p>Loading...</p>
         } else if (this.state.error === true) {
