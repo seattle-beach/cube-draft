@@ -2,13 +2,18 @@ import {mount} from "enzyme";
 import * as React from "react";
 import App from "../src/App";
 import { DummyUntapClient } from "./support/DummyUntapClient"
+import { DummyCard } from "./support/DummyCard";
 
 describe('App', () => {
-    it('renders cards', () => {
-        const subject = mount(<App untapClient={new DummyUntapClient()} />);
+    it('renders cards', async () => {
+        const untapClient = new DummyUntapClient()
+        untapClient.getPack = () => {
+            return Promise.resolve([ DummyCard(), DummyCard() ])
+        }
+
+        const subject = await mount(<App untapClient={untapClient} />);
+        subject.update();
         const images = subject.find('img');
         expect(images.length).toEqual(2);
-        expect(images.first().prop('src')).toEqual('some-image.png');
-        expect(images.first().prop('alt')).toEqual('Card');
     })
 });

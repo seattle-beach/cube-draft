@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
+import {PackProvider} from "./pack/PackProvider";
 
 
 class App extends Component {
   render() {
     return (
-      <div>
-        {this.props.untapClient.getPack().map(function(card, index) {
-          return <img key={index} src={card.image} alt={card.name} />
-        })}
-      </div>
+      <PackProvider untapClient={this.props.untapClient} />
     );
   }
 }
