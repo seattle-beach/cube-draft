@@ -8,9 +8,10 @@
     "react-scripts": "1.1.4"
   },
   "scripts": {
-    "prebuild": "npm run build-css",
+    "prebuild": "yarn build-css",
     "build": "react-scripts build && touch ./build/Staticfile",
     "start-js": "react-scripts start",
+    "pretest": "yarn build-css",
     "test": "babel-node spec/run.js",
     "eject": "react-scripts eject",
     "start": "npm-run-all -p watch-css start-js",
