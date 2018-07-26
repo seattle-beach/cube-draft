@@ -8,6 +8,7 @@ export const Draft = (props) => {
             <p className="Draft-greeting">
                 Hello {paramsFromRoutePath.username}
             </p>
+            waiting for draft to start
         </div>
     )
 }

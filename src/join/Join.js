@@ -1,9 +1,42 @@
-import React from "react"
+import React, {Component} from "react"
+import {Redirect} from 'react-router-dom'
 
-export const Join = () => (
-    <form action="/draft" type="GET">
-        <label htmlFor="username">Enter username:</label>
-        <input name="username" />
-        <button type="submit">Join</button>
-    </form>
-)
+export class Join extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            username: '',
+            submitted: false
+        }
+    }
+
+    joinClick() {
+        this.setState({submitted: true})
+    }
+
+    updateUsername(username) {
+        this.setState({username: username})
+    }
+
+    render() {
+        if (!this.state.submitted) {
+            return (
+                <div>
+                    <label htmlFor="username">Enter username:</label>
+                    <input name="username" onChange={
+                        (event) => this.updateUsername(event.target.value)
+                    }/>
+                    <button onClick={() => this.joinClick()}>Join</button>
+                </div>
+            )
+        } else {
+            return (
+                <Redirect
+                    to={{
+                        pathname: "/draft/" + this.state.username,
+                    }}
+                />
+            )
+        }
+    }
+}
