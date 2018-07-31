@@ -35,12 +35,4 @@ describe('UntapClient', () => {
 
         expect(created).toBeTruthy()
     })
-
-    it('returns false if drafter not created', async () => {
-        server.post('/drafter/create').reply(500)
-
-        const created = await subject.createDrafter();
-
-        expect(created).toBeFalsy()
-    })
 })
