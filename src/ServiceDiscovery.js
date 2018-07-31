@@ -1,8 +1,8 @@
 
 export class ServiceDiscovery {
     untapURI() {
-        if (window.location.hostname === "cube-draft.cfapps.io") {
-            return "https://cube-untap.cfapps.io"
+        if (window.location.href.indexOf("cfapps.io")) {
+            return window.location.href.replace("cube-draft", "cube-untap")
         }
         
         return "http://localhost:3001"
