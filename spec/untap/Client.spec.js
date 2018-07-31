@@ -1,35 +1,22 @@
 import { UntapClient } from "../../src/untap/Client"
-import ServerMock from "mock-http-server"
+import nock from "nock"
 import axios from "axios"
 
 describe('UntapClient', () => {
-    const server = new ServerMock({ host: "localhost", port: 9000 });
+    const server = nock('http://untap-api.com')
     var subject
 
-    beforeEach(function(done) {
-        server.start(done);
-        subject = new UntapClient("http://localhost:9000", axios);
-    });
- 
-    afterEach(function(done) {
-        server.stop(done);
+    beforeEach(function() {
+        subject = new UntapClient("http://untap-api.com", axios);
     });
 
     it('calls service for packs', async () => {
-        server.on({
-            method: 'GET',
-            path: '/pack',
-            reply: {
-                status:  200,
-                headers: { "content-type": "application/json" },
-                body:    JSON.stringify([
-                    {
-                        name: "some-card", 
-                        image: "some-image",
-                    }
-                ])
-            }
-        })
+        server.get('/pack').reply(
+            200, [{
+                name: "some-card",
+                image: "some-image",
+            }]
+        )
 
         const actualCards = await subject.getPack();
         
@@ -39,5 +26,21 @@ describe('UntapClient', () => {
                 image: "some-image",
             }
         ])
+    })
+
+    it('posts to register drafters', async () => {
+        server.post('/drafter/create', { drafter: "Zach" }).reply(201)
+
+        const created = await subject.createDrafter("Zach");
+
+        expect(created).toBeTruthy()
+    })
+
+    it('returns false if drafter not created', async () => {
+        server.post('/drafter/create').reply(500)
+
+        const created = await subject.createDrafter();
+
+        expect(created).toBeFalsy()
     })
 })

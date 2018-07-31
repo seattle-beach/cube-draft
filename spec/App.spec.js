@@ -8,32 +8,12 @@ import {Join} from "../src/join/Join"
 
 describe('App', () => {
     describe("/", () => {
-        it('allows user to join a draft', () => {
+        it('shows a join page', () => {
             const subject = mountRender({
                 route: "/"
             })
 
             expect(subject.find(Join).exists()).toBeTruthy()
-
-            const usernameField = subject.find('input')
-            const submitButton = subject.find('button')
-            expect(usernameField.exists()).toBeTruthy()
-            expect(submitButton.exists()).toBeTruthy()
-
-            const username = 'john_doe'
-            
-            usernameField.simulate('change', {
-                target: {
-                    value: username
-                }
-            })
-
-            submitButton.simulate('click')
-            subject.update()
-            const welcomeMessage = subject.find('.Draft-greeting')
-            expect(welcomeMessage.exists()).toBeTruthy()
-            expect(welcomeMessage).toIncludeText('Hello ' + username)
-            expect(subject.find('.Draft')).toIncludeText('waiting for draft to start')
         })
     })
 

@@ -1,5 +1,4 @@
 export class DummyUntapClient {
-    getPack() {
-        return new Promise(() => {});
-    }
+    getPack() {return new Promise(() => {});}
+    createDrafter() {return new Promise(() => {});}
 }

@@ -10,4 +10,15 @@ export class UntapClient {
                 return response.data;
             })
     }
+
+    createDrafter(drafter) {
+        return this.axios.post(this.baseUrl + '/drafter/create', {
+            drafter: drafter
+        }).then((response) => {
+                return true
+            }, (response) => {
+                return false
+            }
+        )
+    }
 }
