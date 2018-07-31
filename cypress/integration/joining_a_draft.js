@@ -7,7 +7,7 @@ describe('Joining a draft', function() {
         cy.contains('Hello some-drafter')
         cy.contains('waiting for draft to start')
 
-        cy.request(Cypress.env('backendUrl')).its('body')
+        cy.request(Cypress.env('BACKEND_URL')).its('body')
             .should('include', 'Users waiting to draft')
             .should('include', 'some-drafter')
     })
