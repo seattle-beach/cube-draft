@@ -1,17 +1,25 @@
 import React, {Component} from "react"
 import {Redirect} from 'react-router-dom'
+import PropTypes from 'prop-types';
 
 export class Join extends Component {
     constructor(props) {
         super(props)
         this.state = {
             username: '',
-            submitted: false
+            submitted: false,
+            error: false
         }
     }
 
     joinClick() {
-        this.setState({submitted: true})
+        this.props.untapClient.createDrafter(this.state.username)
+            .then(() => {
+                this.setState({submitted: true})
+            }, (err) => {
+                this.setState({error: true})
+            }
+        )
     }
 
     updateUsername(username) {
@@ -19,7 +27,9 @@ export class Join extends Component {
     }
 
     render() {
-        if (!this.state.submitted) {
+        if (this.state.error) {
+            return <div>Draft registration failed</div>
+        } else if (!this.state.submitted) {
             return (
                 <div>
                     <label htmlFor="username">Enter username:</label>
@@ -40,3 +50,7 @@ export class Join extends Component {
         }
     }
 }
+
+Join.propTypes = {
+    untapClient: PropTypes.object.isRequired
+};

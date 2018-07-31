@@ -10,7 +10,7 @@ class App extends Component {
     return (
         <Switch>
           <Route exact path="/" render={() => (
-              <Join />
+              <Join untapClient={this.props.untapClient} />
             )}
           />
 
