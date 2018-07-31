@@ -2,6 +2,5 @@
 applications:
 - name: cube-draft
   memory: 64M
-  host: cube-draft
   buildpack: staticfile_buildpack
   path: build
