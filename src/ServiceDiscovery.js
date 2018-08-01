@@ -5,6 +5,6 @@ export class ServiceDiscovery {
             return window.location.href.replace("cube-draft", "cube-untap")
         }
         
-        return "http://localhost:3001"
+        return "http://cube-untap.localhost.dev"
     }
 }

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+sudo cp ./setup-files/cube-sites.conf /etc/apache2/other
+cat ./setup-files/host-file-entries | sudo tee -a /etc/hosts
+sudo killall -HUP mDNSResponder;sudo killall mDNSResponderHelper;sudo dscacheutil -flushcache
+sudo apachectl restart
+
+yarn install

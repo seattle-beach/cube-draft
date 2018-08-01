@@ -14,7 +14,8 @@
     "pretest": "yarn build-css",
     "test": "babel-node spec/run.js",
     "eject": "react-scripts eject",
-    "start": "npm-run-all -p watch-css start-js",
+    "prestart": "sudo apachectl start",
+    "start": "HOST=cube-draft.localhost.dev npm-run-all -p watch-css start-js",
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive"
   },
