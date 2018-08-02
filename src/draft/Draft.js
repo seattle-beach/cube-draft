@@ -1,5 +1,6 @@
 import React from "react"
 import "./Draft.css"
+import {PackProvider} from "../pack/PackProvider"
 
 export const Draft = (props) => {
     const paramsFromRoutePath = props.match.params
@@ -9,6 +10,12 @@ export const Draft = (props) => {
                 Hello {paramsFromRoutePath.username}
             </p>
             waiting for draft to start
+
+
+            <PackProvider
+                username={paramsFromRoutePath.username}
+                untapClient={props.untapClient}
+            />
         </div>
     )
 }

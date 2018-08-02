@@ -4,8 +4,8 @@ export class UntapClient {
         this.axios = axios;
     }
 
-    getPack() {
-        return this.axios.get(this.baseUrl + "/pack")
+    getPack(drafter) {
+        return this.axios.get(this.baseUrl + "/pack/" + drafter)
             .then((response) => {
                 return response.data;
             })

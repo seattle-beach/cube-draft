@@ -11,14 +11,14 @@ describe('UntapClient', () => {
     });
 
     it('calls service for packs', async () => {
-        server.get('/pack').reply(
+        server.get('/pack/Noah').reply(
             200, [{
                 name: "some-card",
                 image: "some-image",
             }]
         )
 
-        const actualCards = await subject.getPack();
+        const actualCards = await subject.getPack("Noah");
         
         expect(actualCards).toEqual([
             {

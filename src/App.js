@@ -15,10 +15,7 @@ class App extends Component {
           />
 
           <Route path="/draft/:username" render={(props) => (
-              <div>
-                <Draft {...props}/>
-                <PackProvider untapClient={this.props.untapClient} />
-              </div>
+              <Draft {...props} untapClient={this.props.untapClient} />
             )}
           />
         </Switch>

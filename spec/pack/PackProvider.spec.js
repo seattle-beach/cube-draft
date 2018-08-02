@@ -6,7 +6,7 @@ import React from "react";
 
 describe('PackProvider', () => {
     it('shows loading indicator', () => {
-        const subject = shallow(<PackProvider untapClient={new DummyUntapClient()} />);
+        const subject = shallowRender();
 
         const loadingText = subject.find('p');
         expect(loadingText.text()).toEqual('Loading...');
@@ -16,7 +16,7 @@ describe('PackProvider', () => {
         const untapClient = new DummyUntapClient()
         untapClient.getPack = () => Promise.reject();
 
-        const subject = await shallow(<PackProvider untapClient={untapClient} />);
+        const subject = await shallowRender({untapClient:untapClient})
         subject.update()
 
         expect(subject.find('p').text()).toEqual('Unable to load Pack')
@@ -26,9 +26,18 @@ describe('PackProvider', () => {
         const untapClient = new DummyUntapClient()
         untapClient.getPack = () => Promise.resolve()
 
-        const subject = await shallow(<PackProvider untapClient={untapClient} />);
+        const subject = await shallowRender({untapClient:untapClient})
         subject.update()
 
         expect(subject.find(Pack).exists()).toBeTruthy();
     })
 });
+
+function shallowRender(params={}) {
+    return shallow(
+        <PackProvider
+            username={params.username ? params.username : ""}
+            untapClient={params.untapClient ? params.untapClient : new DummyUntapClient()}
+        />
+    );
+}

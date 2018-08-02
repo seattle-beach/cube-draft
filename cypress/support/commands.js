@@ -23,3 +23,10 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add("registerDrafter", (name) => {
+    cy.visit('/')
+    cy.get('input').type(name)
+    cy.contains('Join').click()
+    cy.url().should('include', '/draft/' + name)
+})

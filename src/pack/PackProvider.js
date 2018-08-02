@@ -1,5 +1,6 @@
 import React, {Component} from "react"
 import { Pack } from "./Pack"
+import PropTypes from 'prop-types';
 
 export class PackProvider extends Component {
     constructor(props) {
@@ -12,7 +13,7 @@ export class PackProvider extends Component {
     }
 
     componentDidMount() {
-        this.props.untapClient.getPack().then((cards) => {
+        this.props.untapClient.getPack(this.props.username).then((cards) => {
             this.setState({cards: cards, loading: false});
         }, (err) => {
             this.setState({error: true, loading: false})
@@ -28,4 +29,9 @@ export class PackProvider extends Component {
             return <Pack cards={this.state.cards} />
         }
     }
-  }
+}
+
+PackProvider.propTypes = {
+    username: PropTypes.string.isRequired,
+    untapClient: PropTypes.object.isRequired,
+};
