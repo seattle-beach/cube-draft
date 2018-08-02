@@ -1,5 +1,5 @@
 {
-    "baseUrl": "http://cube-draft.localhost.dev",
+    "baseUrl": "http://cube-draft.localhost.dev/#",
     "env": {
         "BACKEND_URL": "http://cube-untap.localhost.dev"
     }
