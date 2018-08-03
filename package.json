@@ -13,6 +13,7 @@
     "start-js": "react-scripts start",
     "pretest": "yarn build-css",
     "test": "babel-node spec/run.js",
+    "integration-test": "cypress run",
     "eject": "react-scripts eject",
     "prestart": "sudo apachectl start",
     "start": "HOST=cube-draft.localhost.dev npm-run-all -p watch-css start-js",
