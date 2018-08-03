@@ -9,7 +9,7 @@
   },
   "scripts": {
     "prebuild": "yarn build-css",
-    "build": "react-scripts build && touch ./build/Staticfile",
+    "build": "react-scripts build && cp ./build_support/* ./build/",
     "start-js": "react-scripts start",
     "pretest": "yarn build-css",
     "test": "babel-node spec/run.js",
