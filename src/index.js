@@ -5,15 +5,15 @@ import registerServiceWorker from './registerServiceWorker';
 import {UntapClient} from './untap/Client';
 import axios from "axios"
 import {ServiceDiscovery} from "./ServiceDiscovery"
-import {HashRouter} from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import "./styles/all.css"
 
 const serviceDiscovery = new ServiceDiscovery();
 const untapClient = new UntapClient(serviceDiscovery.untapURI(), axios)
 ReactDOM.render(
-<HashRouter>
+<BrowserRouter>
     <App
         untapClient={untapClient} 
     />
-</HashRouter>, document.getElementById('root'));
+</BrowserRouter>, document.getElementById('root'));
 registerServiceWorker();
