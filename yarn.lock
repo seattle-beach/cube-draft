@@ -1795,7 +1795,7 @@ colors@0.5.x:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/colors/-/colors-0.5.1.tgz#7d0023eaeb154e8ee9fce75dcb923d0ed1667774"
 
-colors@~1.1.2:
+colors@1.1.2, colors@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.1.2.tgz#168a4701756b6a7f51a12ce0c97bfa28c084ed63"
 
@@ -4455,6 +4455,12 @@ jasmine-enzyme@^6.0.2:
   resolved "https://registry.yarnpkg.com/jasmine-enzyme/-/jasmine-enzyme-6.0.2.tgz#cce700a36c4b54dffc4792ef0c168f85e1696118"
   dependencies:
     enzyme-matchers "^6.0.2"
+
+jasmine-spec-reporter@^4.2.1:
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/jasmine-spec-reporter/-/jasmine-spec-reporter-4.2.1.tgz#1d632aec0341670ad324f92ba84b4b32b35e9e22"
+  dependencies:
+    colors "1.1.2"
 
 jasmine@^3.1.0:
   version "3.1.0"

@@ -24,7 +24,7 @@ describe('PackProvider', () => {
 
     it('renders a pack when data is returned', async () => {
         const untapClient = new DummyUntapClient()
-        untapClient.getPack = () => Promise.resolve()
+        untapClient.getPack = () => Promise.resolve([])
 
         const subject = await shallowRender({untapClient:untapClient})
         subject.update()

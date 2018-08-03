@@ -3,6 +3,7 @@ import {PackProvider} from "./pack/PackProvider";
 import {Route, Switch} from "react-router-dom";
 import {Join} from "./join/Join"
 import {Draft} from "./draft/Draft"
+import PropTypes from 'prop-types';
 
 
 class App extends Component {
@@ -24,3 +25,7 @@ class App extends Component {
 }
 
 export default App;
+
+App.propTypes = {
+  untapClient: PropTypes.object.isRequired,
+};

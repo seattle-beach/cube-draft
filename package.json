@@ -30,6 +30,7 @@
     "ignore-styles": "^5.0.1",
     "jasmine": "^3.1.0",
     "jasmine-enzyme": "^6.0.2",
+    "jasmine-spec-reporter": "^4.2.1",
     "jsdom": "^11.11.0",
     "nock": "^9.4.3",
     "node-sass": "^4.9.2",

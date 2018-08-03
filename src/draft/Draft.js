@@ -1,6 +1,7 @@
 import React from "react"
 import "./Draft.css"
 import {PackProvider} from "../pack/PackProvider"
+import PropTypes from 'prop-types';
 
 export const Draft = (props) => {
     const paramsFromRoutePath = props.match.params
@@ -19,3 +20,7 @@ export const Draft = (props) => {
         </div>
     )
 }
+
+Draft.propTypes = {
+    untapClient: PropTypes.object.isRequired,
+};

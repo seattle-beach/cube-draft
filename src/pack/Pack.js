@@ -1,5 +1,6 @@
 import React from 'react';
 import "./Pack.css"
+import PropTypes from 'prop-types';
 
 export const Pack = (props) => {
     return (
@@ -10,3 +11,10 @@ export const Pack = (props) => {
         </div>
     )
 }
+
+Pack.propTypes = {
+    cards: PropTypes.arrayOf(PropTypes.shape({
+        image: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+    })).isRequired
+};
