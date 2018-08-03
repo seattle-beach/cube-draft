@@ -21,5 +21,5 @@ import './commands'
 
 
 beforeEach(function () {
-    cy.request(Cypress.env('BACKEND_URL') + "/reset_db")
+    cy.request(Cypress.env('BACKEND_URL') + "/api/reset_db")
 })
