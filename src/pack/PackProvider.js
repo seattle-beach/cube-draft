@@ -21,12 +21,16 @@ export class PackProvider extends Component {
     }
 
     render() {
+        console.log('RENDER PACK PROVIDER')
         if (this.state.loading) {
             return <p>Loading...</p>
         } else if (this.state.error === true) {
             return <p>Unable to load Pack</p>
         } else {
-            return <Pack cards={this.state.cards} />
+            return <Pack
+                onCardClick={this.props.onCardClick}
+                cards={this.state.cards}
+            />
         }
     }
 }
@@ -34,4 +38,5 @@ export class PackProvider extends Component {
 PackProvider.propTypes = {
     username: PropTypes.string.isRequired,
     untapClient: PropTypes.object.isRequired,
+    onCardClick: PropTypes.func,
 };

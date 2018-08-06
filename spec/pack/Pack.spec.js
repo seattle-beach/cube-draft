@@ -25,8 +25,8 @@ describe('Pack', () => {
 
     it('highlight selected card image', () => {
         const cards = [
-            DummyCard({name: "Card", image: "some-image.png"}),
-            DummyCard()
+            DummyCard({name: "A Card"}),
+            DummyCard({name: "Another Card"})
         ]
         const subject = shallow(<Pack cards={cards} />)
 
@@ -39,5 +39,16 @@ describe('Pack', () => {
 
         expect(images().first()).toHaveClassName('Pack-card-selected')
         expect(images().last()).not.toHaveClassName('Pack-card-selected')
+    })
+
+    it('calls the provided callback when a card is picked', () => {
+        const onCardClickCallback = jasmine.createSpy('onCardClickCallback')
+        const card = DummyCard()
+        const subject = shallow(<Pack onCardClick={onCardClickCallback} cards={[card]} />)
+
+        subject.find('img').first().simulate('click')
+
+        expect(onCardClickCallback).toHaveBeenCalledTimes(1)
+        expect(onCardClickCallback).toHaveBeenCalledWith(card)
     })
 })

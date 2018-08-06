@@ -22,5 +22,19 @@ describe('Drafting cards', () => {
         }).then(() => {
             expect(firstCards).to.not.deep.equal(secondCards)
         })
+
+        let clickedCard
+
+        cy.visit('/draft/first-drafter')
+            .get('[data-cy=drafted-card]').should('have.length', 0)
+            .get('[data-cy=card]').should('have.length', 15)
+            .get('[data-cy=card]:first-child').then(($card) => {
+                clickedCard = $card.attr('alt')
+            }).click()
+            .get('[data-cy=draft-selected-card]').click()
+            .get('[data-cy=drafted-card]').should('have.length', 1)
+            .then(($cards) => {
+                expect($cards).to.contain(clickedCard)
+            })
     })
 })

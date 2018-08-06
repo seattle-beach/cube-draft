@@ -7,12 +7,16 @@ export class Pack extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedIndex: -1
+            selectedCard: {name: "", image: ""}
         }
     }
 
-    cardClick(index) {
-        this.setState({selectedIndex: index})
+    cardClick(card) {
+        this.setState({selectedCard: card})
+
+        if (this.props.onCardClick) {
+            this.props.onCardClick(card)
+        }
     }
 
     render() {
@@ -23,9 +27,9 @@ export class Pack extends Component {
                         data-cy="card"
                         className={classNames(
                             "Pack-card",
-                            {"Pack-card-selected": this.state.selectedIndex === index}
+                            {"Pack-card-selected": this.state.selectedCard.name === card.name}
                         )}
-                        onClick={() => this.cardClick(index)}
+                        onClick={() => this.cardClick(card)}
                         key={index}
                         src={card.image}
                         alt={card.name}
@@ -40,5 +44,6 @@ Pack.propTypes = {
     cards: PropTypes.arrayOf(PropTypes.shape({
         image: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
-    })).isRequired
+    })).isRequired,
+    onCardClick: PropTypes.func
 };
