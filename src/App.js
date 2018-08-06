@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import {PackProvider} from "./pack/PackProvider";
 import {Route, Switch} from "react-router-dom";
 import {Join} from "./join/Join"
 import {Draft} from "./draft/Draft"

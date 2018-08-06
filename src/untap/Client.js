@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 export class UntapClient {
     constructor(baseUrl, axios){
         this.baseUrl = baseUrl;
@@ -19,3 +21,10 @@ export class UntapClient {
         })
     }
 }
+
+export const UntapClientShape = PropTypes.shape(
+    {
+        getPack: PropTypes.func.isRequired,
+        createDrafter: PropTypes.func.isRequired,
+    }
+)
