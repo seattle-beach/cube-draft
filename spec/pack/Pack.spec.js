@@ -22,4 +22,22 @@ describe('Pack', () => {
         expect(images.first().prop('src')).toEqual('some-image.png');
         expect(images.first().prop('alt')).toEqual('Card');
     })
+
+    it('highlight selected card image', () => {
+        const cards = [
+            DummyCard({name: "Card", image: "some-image.png"}),
+            DummyCard()
+        ]
+        const subject = shallow(<Pack cards={cards} />)
+
+        const images = () => subject.find('img');
+
+        expect(images().first()).not.toHaveClassName('Pack-card-selected')
+        expect(images().last()).not.toHaveClassName('Pack-card-selected')
+
+        images().first().simulate('click')
+
+        expect(images().first()).toHaveClassName('Pack-card-selected')
+        expect(images().last()).not.toHaveClassName('Pack-card-selected')
+    })
 })
