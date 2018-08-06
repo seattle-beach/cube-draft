@@ -21,7 +21,6 @@ export class PackProvider extends Component {
     }
 
     render() {
-        console.log('RENDER PACK PROVIDER')
         if (this.state.loading) {
             return <p>Loading...</p>
         } else if (this.state.error === true) {
