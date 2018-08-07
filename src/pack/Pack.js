@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import "./Pack.css"
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import {CardShape} from '../untap/Card'
 
 export class Pack extends Component {
     constructor(props) {
@@ -41,9 +42,6 @@ export class Pack extends Component {
 }
 
 Pack.propTypes = {
-    cards: PropTypes.arrayOf(PropTypes.shape({
-        image: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-    })).isRequired,
+    cards: PropTypes.arrayOf(CardShape).isRequired,
     onCardClick: PropTypes.func
 };

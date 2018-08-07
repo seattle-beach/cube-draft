@@ -5,6 +5,7 @@ describe('Drafting cards', () => {
     })
 
     it('lets 2 users draft', () => {
+        // Draft can be started
         cy.visit(Cypress.env('BACKEND_URL'))
             .get('body').should('contain', "Users waiting to draft")
             .get('body').should('not.contain', "Users drafting")
@@ -12,6 +13,7 @@ describe('Drafting cards', () => {
             .get('body').should('not.contain', "Users waiting to draft")
             .get('body').should('contain', "Users drafting")
 
+        // Drafters see different cards
         var firstCards = []
         var secondCards = []
 
@@ -23,6 +25,7 @@ describe('Drafting cards', () => {
             expect(firstCards).to.not.deep.equal(secondCards)
         })
 
+        // Drafter can choose a card
         let clickedCard
 
         cy.visit('/draft/first-drafter')

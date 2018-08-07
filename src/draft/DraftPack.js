@@ -2,6 +2,8 @@ import React, {Component} from "react"
 import "./Draft.css"
 import {withCards} from "../pack/WithCards"
 import {Pack} from "../pack/Pack"
+import PropTypes from 'prop-types';
+import {CardShape} from '../untap/Card'
 
 export class DraftPack extends Component {
     constructor(props) {
@@ -38,6 +40,10 @@ export class DraftPack extends Component {
             </div>
         )
     }
+}
+
+DraftPack.propTypes = {
+    cards: PropTypes.arrayOf(CardShape).isRequired,
 }
 
 export const DraftPackWithCards = withCards(DraftPack)
