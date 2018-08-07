@@ -9,6 +9,6 @@
     "helpers/jsdom.js",
     "helpers/**/*.js"
   ],
-  "stopSpecOnExpectationFailure": false,
+  "stopSpecOnExpectationFailure": true,
   "random": true
 }

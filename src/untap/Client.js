@@ -2,22 +2,33 @@ import PropTypes from 'prop-types';
 
 export class UntapClient {
     constructor(baseUrl, axios){
-        this.baseUrl = baseUrl;
-        this.axios = axios;
+        this.http = axios.create({
+            baseURL: baseUrl
+        });
     }
 
     getPack(drafter) {
-        return this.axios.get(this.baseUrl + "/pack/" + drafter)
+        return this.http.get("/pack/" + drafter)
             .then((response) => {
-                return response.data;
+                return response.data.map((card) => (
+                    {
+                        id: card.id,
+                        name: card.name,
+                        image: card.image,
+                    }
+                ));
             })
     }
 
     createDrafter(drafter) {
-        return this.axios.post(this.baseUrl + '/drafter/create', {
+        return this.http.post('/drafter/create', {
             drafter: drafter
-        }).then((response) => {
-            return true
+        })
+    }
+
+    pickCard(drafter, cardId) {
+        return this.http.post('/drafter/' + drafter + '/pickCard', {
+            cardId: cardId
         })
     }
 }
@@ -26,5 +37,6 @@ export const UntapClientShape = PropTypes.shape(
     {
         getPack: PropTypes.func.isRequired,
         createDrafter: PropTypes.func.isRequired,
+        pickCard: PropTypes.func.isRequired,
     }
 )

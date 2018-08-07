@@ -4,6 +4,7 @@ import {withCards} from "../pack/WithCards"
 import {Pack} from "../pack/Pack"
 import PropTypes from 'prop-types';
 import {CardShape} from '../untap/Card'
+import {UntapClientShape} from "../untap/Client"
 
 export class DraftPack extends Component {
     constructor(props) {
@@ -17,6 +18,10 @@ export class DraftPack extends Component {
     draftSelectedCard() {
         if(this.state.selectedCard) {
             this.setState({draftCard: true})
+            this.props.untapClient.pickCard(
+                this.props.username,
+                this.state.selectedCard.id
+            )
         }
     }
 
@@ -44,6 +49,8 @@ export class DraftPack extends Component {
 
 DraftPack.propTypes = {
     cards: PropTypes.arrayOf(CardShape).isRequired,
+    untapClient: UntapClientShape.isRequired,
+    username: PropTypes.string.isRequired,
 }
 
 export const DraftPackWithCards = withCards(DraftPack)
