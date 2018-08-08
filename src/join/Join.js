@@ -12,7 +12,7 @@ export class Join extends Component {
         }
     }
 
-    joinClick() {
+    join() {
         this.props.untapClient.createDrafter(this.state.username)
             .then(() => {
                 this.setState({submitted: true})
@@ -35,8 +35,13 @@ export class Join extends Component {
                     <label htmlFor="username">Enter username:</label>
                     <input name="username" onChange={
                         (event) => this.updateUsername(event.target.value)
-                    }/>
-                    <button onClick={() => this.joinClick()}>Join</button>
+                    }
+                    onKeyPress={(event) => {
+                        if (event.key === "Enter") {
+                            this.join()
+                        }
+                    }}/>
+                    <button onClick={() => this.join()}>Join</button>
                 </div>
             )
         } else {

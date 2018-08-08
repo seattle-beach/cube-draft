@@ -5,27 +5,51 @@ import {Redirect} from 'react-router-dom'
 import {DummyUntapClient} from '../support/DummyUntapClient'
 
 describe('Join', () => {
-    it('redirects to the draft page when the user registers', async () => {
-        const untapClient = new DummyUntapClient()
-        untapClient.createDrafter = () => Promise.resolve()
+    describe('input box', () => {
+        let subject, button, redirect
 
-        const subject = shallow(<Join untapClient={untapClient} />)
-        const button = subject.find('button')
-        const redirect = () => subject.find(Redirect)
+        beforeEach(() => {
+            const untapClient = new DummyUntapClient()
+            untapClient.createDrafter = () => Promise.resolve()
 
-        expect(redirect().exists()).toBeFalsy()
-        subject.find('input').simulate('change', {
-            target: {
-                value: "some-user"
-            }
+            subject = shallow(<Join untapClient={untapClient} />)
+            button = subject.find('button')
+            redirect = () => subject.find(Redirect)
+
+            expect(redirect().exists()).toBeFalsy()
+            subject.find('input').simulate('change', {
+                target: {
+                    value: "some-user"
+                }
+            })
+            expect(redirect().exists()).toBeFalsy()
         })
-        expect(redirect().exists()).toBeFalsy()
-        await button.simulate('click')
-        subject.update()
-        expect(redirect().exists()).toBeTruthy()
-        expect(redirect().prop('to')).toEqual({pathname: "/draft/some-user"})
-    })
 
+        it('redirects to the draft page when the user clicks join', async () => {
+            await button.simulate('click')
+
+            subject.update()
+            expect(redirect().exists()).toBeTruthy()
+            expect(redirect().prop('to')).toEqual({pathname: "/draft/some-user"})
+        })
+
+        it('redirects to the draft page when the user presses enter', async () => {
+            await subject.find('input').simulate('keypress', {key: 'Enter'})
+
+            subject.update()
+            expect(redirect().exists()).toBeTruthy()
+            expect(redirect().prop('to')).toEqual({pathname: "/draft/some-user"})
+        })
+
+        it('does not redirects to the draft page when the user presses other keys', async () => {
+            await subject.find('input').simulate('keypress', {key: 'a'})
+
+            subject.update()
+            expect(redirect().exists()).toBeFalsy()
+        })
+
+    })
+    
     it('shows the user an error when registering fails', async () => {
         const untapClient = new DummyUntapClient()
         untapClient.createDrafter = () => Promise.reject()
