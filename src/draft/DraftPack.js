@@ -11,13 +11,14 @@ export class DraftPack extends Component {
         super(props)
         this.state = {
             selectedCard: undefined,
-            draftCard: false
+            draftCard: false,
+            isLoading: false,
         }
     }
 
     draftSelectedCard() {
         if(this.state.selectedCard) {
-            this.setState({draftCard: true})
+            this.setState({draftCard: true, isLoading: true})
             this.props.untapClient.pickCard(
                 this.props.username,
                 this.state.selectedCard.id
@@ -32,14 +33,21 @@ export class DraftPack extends Component {
         return null;
     }
 
+    maybePack(){
+        if(this.state.isLoading) {
+            return <p>Loading...</p>
+        } else {
+            return <Pack
+                onCardClick={(card) => this.setState({selectedCard: card})}
+                cards={this.props.cards}
+            />
+        }
+    }
+
     render() {
         return (
-            <div>
-                <Pack
-                    onCardClick={(card) => this.setState({selectedCard: card})}
-                    cards={this.props.cards}
-                />
-                
+            <div className="DraftPack">
+                {this.maybePack()}
                 <button data-cy="draft-selected-card" onClick={() => this.draftSelectedCard()}>Draft selected card</button>
                 {this.maybeSelectedCard()}
             </div>

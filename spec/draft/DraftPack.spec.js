@@ -2,6 +2,7 @@ import {mount} from "enzyme"
 import React from "react"
 import {DummyCard} from "../support/DummyCard"
 import { DraftPack } from "../../src/draft/DraftPack";
+import { Pack } from "../../src/pack/Pack";
 import {DummyUntapClient} from "../support/DummyUntapClient"
 
 describe('DraftPack', () => {
@@ -48,6 +49,27 @@ describe('DraftPack', () => {
         expect(untapClient.pickCard).toHaveBeenCalledTimes(1)
         expect(untapClient.pickCard).toHaveBeenCalledWith("some-user", 123)
     })
+
+    it('displays a loading screen while waiting for a card to be picked', () => {
+        const untapClient = new DummyUntapClient()
+        untapClient.pickCard = jasmine.createSpy('pickCard')
+        const cards = [ DummyCard({id: 123}) ]
+
+        const subject = mountRender({
+            cards: cards,
+            untapClient: untapClient,
+            username: "some-user"
+        })
+
+        expect(subject.text()).not.toContain('Loading...')
+        expect(subject.find(Pack).exists()).toBeTruthy()
+
+        subject.find('img').first().simulate('click')
+        subject.find('button').first().simulate('click')
+
+        expect(subject.text()).toContain('Loading...')
+        expect(subject.find(Pack).exists()).toBeFalsy()
+    });
 });
 
 function mountRender(params={}) {
