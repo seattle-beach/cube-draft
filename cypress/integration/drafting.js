@@ -34,6 +34,7 @@ describe('Drafting cards', () => {
             .get('[data-cy=card]:first-child').then(($card) => {
                 clickedCard = $card.attr('alt')
             }).click()
+            .visit('/draft/first-drafter')
             .get('[data-cy=draft-selected-card]').click()
             .get('[data-cy=drafted-card]').should('have.length', 1)
             .then(($cards) => {

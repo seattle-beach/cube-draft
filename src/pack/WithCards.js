@@ -24,7 +24,7 @@ export const withCards = (WrappedComponent) => {
         render() {
             if (this.state.loading) {
                 return <p>Loading...</p>
-            } else if (this.state.error === true) {
+            } else if (this.state.error) {
                 return <p>Unable to load Pack</p>
             } else {
                 return <WrappedComponent cards={this.state.cards} {...this.props} />

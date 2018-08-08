@@ -4,14 +4,7 @@ import { shallow, mount } from "enzyme";
 import React from "react";
 import { DummyCard } from "../support/DummyCard";
 
-describe('PackCardProvider', () => {
-
-    it('shows loading indicator new', () => {
-        const subject = shallowRender();
-
-        const loadingText = subject.find('p');
-        expect(loadingText.text()).toEqual('Loading...');
-    });
+describe('WithCards', () => {
     
     it('shows loading indicator', () => {
         const subject = shallowRender();

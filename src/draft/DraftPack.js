@@ -5,6 +5,7 @@ import {Pack} from "../pack/Pack"
 import PropTypes from 'prop-types';
 import {CardShape} from '../untap/Card'
 import {UntapClientShape} from "../untap/Client"
+import {CardPickerWithUntapData} from "./CardPicker"
 
 export class DraftPack extends Component {
     constructor(props) {
@@ -15,23 +16,6 @@ export class DraftPack extends Component {
         }
     }
 
-    draftSelectedCard() {
-        if(this.state.selectedCard) {
-            this.setState({draftCard: true})
-            this.props.untapClient.pickCard(
-                this.props.username,
-                this.state.selectedCard.id
-            )
-        }
-    }
-
-    maybeSelectedCard() {
-        if (this.state.selectedCard && this.state.draftCard) {
-            return <p data-cy="drafted-card">{this.state.selectedCard.name}</p>
-        }
-        return null;
-    }
-
     render() {
         return (
             <div>
@@ -40,8 +24,17 @@ export class DraftPack extends Component {
                     cards={this.props.cards}
                 />
                 
-                <button data-cy="draft-selected-card" onClick={() => this.draftSelectedCard()}>Draft selected card</button>
-                {this.maybeSelectedCard()}
+                <CardPickerWithUntapData
+                    selectedCard={this.state.selectedCard}
+                    username={this.props.username}
+
+
+
+
+
+                    
+                    untapClient={this.props.untapClient}
+                />
             </div>
         )
     }
