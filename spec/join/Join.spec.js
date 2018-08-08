@@ -47,7 +47,6 @@ describe('Join', () => {
             subject.update()
             expect(redirect().exists()).toBeFalsy()
         })
-
     })
     
     it('shows the user an error when registering fails', async () => {

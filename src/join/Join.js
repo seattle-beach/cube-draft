@@ -22,6 +22,12 @@ export class Join extends Component {
         )
     }
 
+    joinIfEnter(key){
+        if (key === "Enter") {
+            this.join()
+        }
+    }
+
     updateUsername(username) {
         this.setState({username: username})
     }
@@ -33,14 +39,11 @@ export class Join extends Component {
             return (
                 <div>
                     <label htmlFor="username">Enter username:</label>
-                    <input name="username" onChange={
-                        (event) => this.updateUsername(event.target.value)
-                    }
-                    onKeyPress={(event) => {
-                        if (event.key === "Enter") {
-                            this.join()
-                        }
-                    }}/>
+                    <input
+                        name="username"
+                        onChange={(event) => this.updateUsername(event.target.value)}
+                        onKeyPress={(event) => this.joinIfEnter(event.key)}
+                    />
                     <button onClick={() => this.join()}>Join</button>
                 </div>
             )
