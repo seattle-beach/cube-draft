@@ -33,6 +33,8 @@ describe('DraftPack', () => {
     it('saves the drafted card', () => {
         const untapClient = new DummyUntapClient()
         untapClient.pickCard = jasmine.createSpy('pickCard')
+            .and.returnValue(Promise.resolve())
+
         const cards = [ DummyCard({id: 123}) ]
 
         const subject = mountRender({
@@ -51,15 +53,8 @@ describe('DraftPack', () => {
     })
 
     it('displays a loading screen while waiting for a card to be picked', () => {
-        const untapClient = new DummyUntapClient()
-        untapClient.pickCard = jasmine.createSpy('pickCard')
         const cards = [ DummyCard({id: 123}) ]
-
-        const subject = mountRender({
-            cards: cards,
-            untapClient: untapClient,
-            username: "some-user"
-        })
+        const subject = mountRender({cards: cards})
 
         expect(subject.text()).not.toContain('Loading...')
         expect(subject.find(Pack).exists()).toBeTruthy()
@@ -68,6 +63,32 @@ describe('DraftPack', () => {
         subject.find('button').first().simulate('click')
 
         expect(subject.text()).toContain('Loading...')
+        expect(subject.find(Pack).exists()).toBeFalsy()
+    });
+
+    it('displays an error when picking a card errors', async () => {
+        const untapClient = new DummyUntapClient()
+        const reason = "Some reason"
+        untapClient.pickCard = () => Promise.reject(Error(reason))
+
+        const cards = [ DummyCard({id: 123}) ]
+
+        const subject = mountRender({
+            cards: cards,
+            untapClient: untapClient,
+        })
+
+        expect(subject.text()).not.toContain(reason)
+        expect(subject.find(Pack).exists()).toBeTruthy()
+
+        subject.find('img').first().simulate('click')
+        subject.find('button').first().simulate('click')
+
+        await
+        subject.update()
+
+        expect(subject.text()).not.toContain('Loading...')
+        expect(subject.text()).toContain(reason)
         expect(subject.find(Pack).exists()).toBeFalsy()
     });
 });

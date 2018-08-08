@@ -13,6 +13,7 @@ export class DraftPack extends Component {
             selectedCard: undefined,
             draftCard: false,
             isLoading: false,
+            errorMessage: ""
         }
     }
 
@@ -22,7 +23,9 @@ export class DraftPack extends Component {
             this.props.untapClient.pickCard(
                 this.props.username,
                 this.state.selectedCard.id
-            )
+            ).catch(reason => {
+                this.setState({errorMessage: reason.message});
+            })
         }
     }
 
@@ -34,7 +37,9 @@ export class DraftPack extends Component {
     }
 
     maybePack(){
-        if(this.state.isLoading) {
+        if (this.state.errorMessage.length > 0){
+            return <p>{this.state.errorMessage}</p>
+        } else if (this.state.isLoading) {
             return <p>Loading...</p>
         } else {
             return <Pack
