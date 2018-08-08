@@ -1,0 +1,20 @@
+.Join {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+
+    .Join-Label {
+        font-size: 3.6rem;
+    }
+
+    .Join-Username {
+        font-size: 3.6rem;
+        margin: 1rem 0;
+    }
+
+    .Join-Button {
+        font-size: 3.6rem;
+    }
+}

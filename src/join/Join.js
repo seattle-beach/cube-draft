@@ -1,4 +1,5 @@
 import React, {Component} from "react"
+import "./Join.css"
 import {Redirect} from 'react-router-dom'
 import PropTypes from 'prop-types';
 
@@ -37,14 +38,14 @@ export class Join extends Component {
             return <div>Draft registration failed</div>
         } else if (!this.state.submitted) {
             return (
-                <div>
-                    <label htmlFor="username">Enter username:</label>
-                    <input
-                        name="username"
-                        onChange={(event) => this.updateUsername(event.target.value)}
-                        onKeyPress={(event) => this.joinIfEnter(event.key)}
-                    />
-                    <button onClick={() => this.join()}>Join</button>
+                <div className='Join'>
+                        <label  className='Join-Label' htmlFor="username">Enter username:</label>
+                        <input className='Join-Username'
+                            name="username"
+                            onChange={(event) => this.updateUsername(event.target.value)}
+                            onKeyPress={(event) => this.joinIfEnter(event.key)}
+                        />
+                        <button className='Join-Button' onClick={() => this.join()}>Join</button>
                 </div>
             )
         } else {
