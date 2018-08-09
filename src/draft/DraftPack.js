@@ -5,27 +5,20 @@ import {Pack} from "../pack/Pack"
 import PropTypes from 'prop-types';
 import {CardShape} from '../untap/Card'
 import {UntapClientShape} from "../untap/Client"
+import {CardPicker} from "../pack/CardPicker"
 
 export class DraftPack extends Component {
     constructor(props) {
         super(props)
         this.state = {
             selectedCard: undefined,
-            draftCard: false,
-            isLoading: false,
-            errorMessage: ""
+            draftCard: false
         }
     }
 
     draftSelectedCard() {
         if(this.state.selectedCard) {
-            this.setState({draftCard: true, isLoading: true})
-            this.props.untapClient.pickCard(
-                this.props.username,
-                this.state.selectedCard.id
-            ).catch(reason => {
-                this.setState({errorMessage: reason.message});
-            })
+            this.setState({draftCard: true})
         }
     }
 
@@ -36,23 +29,20 @@ export class DraftPack extends Component {
         return null;
     }
 
-    maybePack(){
-        if (this.state.errorMessage.length > 0){
-            return <p>{this.state.errorMessage}</p>
-        } else if (this.state.isLoading) {
-            return <p>Loading...</p>
-        } else {
-            return <Pack
-                onCardClick={(card) => this.setState({selectedCard: card})}
-                cards={this.props.cards}
-            />
-        }
-    }
-
     render() {
         return (
             <div className="DraftPack">
-                {this.maybePack()}
+                <CardPicker
+                    untapClient={this.props.untapClient}
+                    username={this.props.username}
+                    selectedCard={this.state.draftCard ? this.state.selectedCard : undefined}
+                >
+                    <Pack
+                        onCardClick={(card) => this.setState({selectedCard: card})}
+                        cards={this.props.cards}
+                    />
+                </CardPicker>
+
                 <button data-cy="draft-selected-card" onClick={() => this.draftSelectedCard()}>Draft selected card</button>
                 {this.maybeSelectedCard()}
             </div>
