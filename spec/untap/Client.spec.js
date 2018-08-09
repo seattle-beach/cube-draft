@@ -52,4 +52,28 @@ describe('UntapClient', () => {
             expect(scope.isDone()).toBeTruthy()
         })
     })
+
+    describe("pickedCards", () => {
+        it('calls service for picked cards', async () => {
+            const scope = server.get('/drafter/LSV/pickedCards').reply(
+                200, 
+                [{
+                    id: 123,
+                    name: "some-card",
+                    image: "some-image.png",
+                }]
+            )
+
+            const actualCards = await subject.pickedCards("LSV");
+
+            expect(actualCards).toEqual([
+                {
+                    id: 123,
+                    name: "some-card",
+                    image: "some-image.png",
+                }
+            ])
+            expect(scope.isDone()).toBeTruthy()
+        })
+    })
 })

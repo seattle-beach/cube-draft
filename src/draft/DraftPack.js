@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import {CardShape} from '../untap/Card'
 import {UntapClientShape} from "../untap/Client"
 import {CardPicker} from "../pack/CardPicker"
+import {DraftedCards} from "../pack/DraftedCards"
 
 export class DraftPack extends Component {
     constructor(props) {
@@ -45,6 +46,11 @@ export class DraftPack extends Component {
 
                 <button data-cy="draft-selected-card" onClick={() => this.draftSelectedCard()}>Draft selected card</button>
                 {this.maybeSelectedCard()}
+
+                <DraftedCards
+                    untapClient={this.props.untapClient}
+                    username={this.props.username}
+                />
             </div>
         )
     }

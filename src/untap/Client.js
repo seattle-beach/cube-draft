@@ -10,13 +10,7 @@ export class UntapClient {
     getPack(drafter) {
         return this.http.get("/pack/" + drafter)
             .then((response) => {
-                return response.data.map((card) => (
-                    {
-                        id: card.id,
-                        name: card.name,
-                        image: card.image,
-                    }
-                ));
+                return response.data.map((card) => this.toCardShape(card));
             })
     }
 
@@ -31,6 +25,21 @@ export class UntapClient {
             cardId: cardId
         })
     }
+
+    pickedCards(drafter) {
+        return this.http.get("/drafter/" + drafter + "/pickedCards")
+            .then((response) => {
+                return response.data.map((card) => this.toCardShape(card));
+            })
+    }
+
+    toCardShape(card) {
+        return {
+            id: card.id,
+            name: card.name,
+            image: card.image,
+        }
+    }
 }
 
 export const UntapClientShape = PropTypes.shape(
@@ -38,5 +47,6 @@ export const UntapClientShape = PropTypes.shape(
         getPack: PropTypes.func.isRequired,
         createDrafter: PropTypes.func.isRequired,
         pickCard: PropTypes.func.isRequired,
+        pickedCards: PropTypes.func.isRequired,
     }
 )

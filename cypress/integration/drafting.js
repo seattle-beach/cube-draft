@@ -35,6 +35,7 @@ describe('Drafting cards', () => {
                 clickedCard = $card.attr('alt')
             }).click()
             .get('[data-cy=draft-selected-card]').click()
+            .visit('/draft/first-drafter')
             .get('[data-cy=drafted-card]').should('have.length', 1)
             .then(($cards) => {
                 expect($cards).to.contain(clickedCard)
