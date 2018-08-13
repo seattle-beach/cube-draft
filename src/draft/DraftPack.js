@@ -44,7 +44,14 @@ export class DraftPack extends Component {
                     />
                 </CardPicker>
 
-                <button data-cy="draft-selected-card" onClick={() => this.draftSelectedCard()}>Draft selected card</button>
+                <button
+                    data-cy="draft-selected-card"
+                    disabled={this.state.selectedCard === undefined}
+                    onClick={() => this.draftSelectedCard()}
+                >
+                    Draft selected card
+                </button>
+
                 {this.maybeSelectedCard()}
 
                 <DraftedCards

@@ -24,10 +24,12 @@ describe('DraftPack', () => {
         const cards = [ DummyCard({name: "some-card"}, DummyCard()) ]
         const subject = mountRender({cards: cards})
 
-        subject.find('button').first().simulate('click')
+        const button = () => subject.find('button')
+        expect(button().prop('disabled')).toBeTruthy()
+
         subject.find('img').first().simulate('click')
 
-        expect(subject.find('[data-cy="drafted-card"]').length).toEqual(0)
+        expect(button().prop('disabled')).toBeFalsy()
     })
 
     it('saves the drafted card', () => {
