@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import PropTypes from "prop-types"
 import "./Draft.css"
-import { DraftPackWithCards } from "./DraftPack";
+import { DraftPack } from "./DraftPack";
 
 export class Draft extends Component {
 
@@ -14,7 +14,7 @@ export class Draft extends Component {
                 </p>    
                 waiting for draft to start
 
-                <DraftPackWithCards
+                <DraftPack
                     username={paramsFromRoutePath.username}
                     untapClient={this.props.untapClient}
                 />
