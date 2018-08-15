@@ -7,10 +7,9 @@ import {DraftedCards} from "../pack/DraftedCards"
 
 export class DraftPack extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
-            selectedCard: undefined,
-            draftCard: false
+            pickedCardsTrigger: false
         }
     }
 
@@ -20,11 +19,13 @@ export class DraftPack extends Component {
                 <CardPickerWithCards
                     untapClient={this.props.untapClient}
                     username={this.props.username}
+                    onPickCompleted={() => this.setState({pickedCardsTrigger: !this.state.pickedCardsTrigger})}
                 />
 
                 <DraftedCards
                     untapClient={this.props.untapClient}
                     username={this.props.username}
+                    triggerToggle={this.state.pickedCardsTrigger}
                 />
             </div>
         )
@@ -34,4 +35,4 @@ export class DraftPack extends Component {
 DraftPack.propTypes = {
     untapClient: UntapClientShape.isRequired,
     username: PropTypes.string.isRequired,
-}
+};

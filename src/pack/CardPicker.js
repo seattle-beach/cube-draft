@@ -7,7 +7,7 @@ import {withCards} from "../pack/WithCards"
 
 export class CardPicker extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             loading: false,
             errorMessage: "",
@@ -16,7 +16,7 @@ export class CardPicker extends Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.draftSelectedCard()
     }
 
@@ -27,14 +27,19 @@ export class CardPicker extends Component {
     }
 
     draftSelectedCard() {
-        if(this.state.selectedCard !== undefined && this.state.draftCard) {
-            this.setState({loading: true, draftCard: false})
+        if (this.state.selectedCard !== undefined && this.state.draftCard) {
+            this.setState({loading: true, draftCard: false});
 
             this.props.untapClient.pickCard(
                 this.props.username,
                 this.state.selectedCard.id
             ).then(() => {
-                this.setState({loading: false, selectedCard: undefined})
+                this.setState({loading: false, selectedCard: undefined});
+
+                if (this.props.onPickCompleted) {
+                    this.props.onPickCompleted()
+                }
+
             }).catch(reason => {
                 this.setState({errorMessage: reason.message});
             })
@@ -42,7 +47,7 @@ export class CardPicker extends Component {
     }
 
     render() {
-        if (this.state.errorMessage.length > 0){
+        if (this.state.errorMessage.length > 0) {
             return <p>{this.state.errorMessage}</p>
         } else if (this.state.loading) {
             return <p>Loading...</p>
@@ -68,10 +73,10 @@ export class CardPicker extends Component {
 }
 
 CardPicker.propTypes = {
-    selectedCard: CardShape,
     untapClient: UntapClientShape.isRequired,
     username: PropTypes.string.isRequired,
     cards: PropTypes.arrayOf(CardShape).isRequired,
-}
+    onPickCompleted: PropTypes.func
+};
 
-export const CardPickerWithCards = withCards(CardPicker)
+export const CardPickerWithCards = withCards(CardPicker);

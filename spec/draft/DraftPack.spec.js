@@ -1,51 +1,44 @@
 import {mount} from "enzyme"
 import React from "react"
 import {DummyCard} from "../support/DummyCard"
-import { DraftPack } from "../../src/draft/DraftPack";
-import { Pack } from "../../src/pack/Pack";
+import {DraftPack} from "../../src/draft/DraftPack";
 import {DummyUntapClient} from "../support/DummyUntapClient"
 
 describe('DraftPack', () => {
+    it('reloads drafted cards after picking a card successfully', async () => {
+        const untapClient = new DummyUntapClient();
+        const getPackPromise = Promise.resolve([DummyCard({id: 123, name: "A Card"})]);
+        const pickCardPromise = Promise.resolve();
+        const pickedCardsSpy = jasmine.createSpy('pickedCards')
+            .and.returnValues(
+                Promise.resolve([]),
+                Promise.resolve([DummyCard({id: 123, name: "A Card"})])
+            );
 
-    describe('the drafters current picks', () => {
-        it('displays a loading screen', async () => {
-            const subject = await mountRender()
+        untapClient.getPack = () => getPackPromise;
+        untapClient.pickCard = () => pickCardPromise;
+        untapClient.pickedCards = pickedCardsSpy;
 
-            expect(subject.text()).toContain('Loading picked cards...')
-        })
+        const subject = mountRender({untapClient: untapClient});
+        await getPackPromise;
+        subject.update();
 
-        it('shows an error when loading fails', async () => {
-            const untapClient = new DummyUntapClient()
-            untapClient.pickedCards = () => Promise.reject();
+        const draftedCards = () => subject.find('[data-cy="drafted-card"]');
+        expect(draftedCards().length).toEqual(0);
 
-            const subject = await mountRender({untapClient:untapClient})
-            subject.update()
+        subject.find('img').first().simulate('click');
+        subject.find('button').first().simulate('click');
 
-            expect(subject.text()).toContain('Unable to load picked cards')
-        })
+        await pickCardPromise;
+        subject.update();
 
-        it('shows a drafters picked cards', async () => {
-            const untapClient = new DummyUntapClient()
-            untapClient.pickedCards = () => Promise.resolve([
-                DummyCard({name: "First Card"}),
-                DummyCard({name: "Second Card"})
-            ])
-
-            const subject = await mountRender({
-                untapClient: untapClient,
-            })
-            subject.update()
-
-            expect(subject.text()).toContain('First Card')
-            expect(subject.text()).toContain('Second Card')
-        })
+        expect(draftedCards().length).toEqual(1);
     })
 });
 
-function mountRender(params={}) {
+function mountRender(params = {}) {
     return mount(
         <DraftPack
-            cards={params.cards ? params.cards : []}
             untapClient={params.untapClient ? params.untapClient : new DummyUntapClient()}
             username={params.username ? params.username : ""}
         />
