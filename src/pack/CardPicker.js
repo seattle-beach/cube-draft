@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types';
-import {CardShape} from '../untap/Card'
 import {UntapClientShape} from "../untap/Client"
-import {Pack} from "../pack/Pack"
-import {withCards} from "../pack/WithCards"
+import {PackWithCards} from "../pack/Pack"
 
 export class CardPicker extends Component {
     constructor(props) {
@@ -40,8 +38,8 @@ export class CardPicker extends Component {
                     this.props.onPickCompleted()
                 }
 
-            }).catch(reason => {
-                this.setState({errorMessage: reason.message});
+            }, (error) => {
+                this.setState({errorMessage: error.message});
             })
         }
     }
@@ -54,8 +52,9 @@ export class CardPicker extends Component {
         } else {
             return (
                 <React.Fragment>
-                    <Pack
-                        cards={this.props.cards}
+                    <PackWithCards
+                        untapClient={this.props.untapClient}
+                        username={this.props.username}
                         onCardClick={(card) => this.setState({selectedCard: card})}
                     />
 
@@ -75,8 +74,5 @@ export class CardPicker extends Component {
 CardPicker.propTypes = {
     untapClient: UntapClientShape.isRequired,
     username: PropTypes.string.isRequired,
-    cards: PropTypes.arrayOf(CardShape).isRequired,
     onPickCompleted: PropTypes.func
 };
-
-export const CardPickerWithCards = withCards(CardPicker);

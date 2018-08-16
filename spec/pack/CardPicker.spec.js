@@ -2,14 +2,19 @@ import {mount} from "enzyme"
 import React from "react"
 import {DummyCard} from "../support/DummyCard"
 import {CardPicker} from "../../src/pack/CardPicker";
-import {Pack} from "../../src/pack/Pack";
 import {DummyUntapClient} from "../support/DummyUntapClient"
+import {Pack} from "../../src/pack/Pack";
 
 describe('CardPicker', () => {
 
     it('only drafts when a card is selected', async () => {
-        const cards = [DummyCard({name: "some-card"}, DummyCard())];
-        const subject = mountRender({cards: cards});
+        const untapClient = new DummyUntapClient();
+        const getPackPromise = Promise.resolve([DummyCard()]);
+        untapClient.getPack = () => getPackPromise;
+
+        const subject = mountRender({untapClient: untapClient});
+        await getPackPromise;
+        subject.update();
 
         const button = () => subject.find('button');
         expect(button().prop('disabled')).toBeTruthy();
@@ -19,18 +24,19 @@ describe('CardPicker', () => {
         expect(button().prop('disabled')).toBeFalsy();
     });
 
-    it('saves the drafted card', () => {
+    it('saves the drafted card', async () => {
         const untapClient = new DummyUntapClient();
+        const getPackPromise = Promise.resolve([DummyCard({id: 123})]);
+        untapClient.getPack = () => getPackPromise;
         untapClient.pickCard = jasmine.createSpy('pickCard')
             .and.returnValue(Promise.resolve());
 
-        const cards = [DummyCard({id: 123})];
-
         const subject = mountRender({
-            cards: cards,
             untapClient: untapClient,
             username: "some-user"
         });
+        await getPackPromise;
+        subject.update();
 
         expect(untapClient.pickCard).toHaveBeenCalledTimes(0);
 
@@ -41,9 +47,19 @@ describe('CardPicker', () => {
         expect(untapClient.pickCard).toHaveBeenCalledWith("some-user", 123);
     });
 
-    it('displays a loading screen while waiting for a card to be picked', () => {
-        const cards = [DummyCard({id: 123})];
-        const subject = mountRender({cards: cards});
+    it('displays a loading screen while waiting for a card to be picked', async () => {
+        const untapClient = new DummyUntapClient();
+        const getPackPromise = Promise.resolve([DummyCard({id: 123})]);
+        untapClient.getPack = () => getPackPromise;
+        untapClient.pickCard = jasmine.createSpy('pickCard')
+            .and.returnValue(Promise.resolve());
+
+        const subject = mountRender({
+            untapClient: untapClient,
+            username: "some-user"
+        });
+        await getPackPromise;
+        subject.update();
 
         expect(subject.text()).not.toContain('Loading...');
         expect(subject.find(Pack).exists()).toBeTruthy();
@@ -57,16 +73,17 @@ describe('CardPicker', () => {
 
     it('displays an error when picking a card errors', async () => {
         const untapClient = new DummyUntapClient();
+        const getPackPromise = Promise.resolve([DummyCard({id: 123})]);
         const reason = "Some reason";
-        const pickCardPromise = Promise.reject(Error(reason));
-        untapClient.pickCard = () => pickCardPromise;
-
-        const cards = [DummyCard({id: 123})];
+        untapClient.getPack = () => getPackPromise;
+        untapClient.pickCard = () => Promise.reject(Error(reason));
 
         const subject = mountRender({
-            cards: cards,
             untapClient: untapClient,
+            username: "some-user"
         });
+        await getPackPromise;
+        subject.update();
 
         expect(subject.text()).not.toContain(reason);
         expect(subject.find(Pack).exists()).toBeTruthy();
@@ -75,8 +92,7 @@ describe('CardPicker', () => {
         subject.find('button').first().simulate('click');
 
         await
-        await
-        subject.update();
+            subject.update();
 
         expect(subject.text()).not.toContain('Loading...');
         expect(subject.text()).toContain(reason);
@@ -85,19 +101,20 @@ describe('CardPicker', () => {
 
     it('calls passed in function when picking a card completes', async () => {
         const untapClient = new DummyUntapClient();
+        const getPackPromise = Promise.resolve([DummyCard({id: 123})]);
         const pickCardPromise = Promise.resolve([]);
+        untapClient.getPack = () => getPackPromise;
         untapClient.pickCard = () => pickCardPromise;
-
-        const cards = [DummyCard({id: 123})];
 
         const spyFunc = jasmine.createSpy('onPickCompletedCallback');
 
         const subject = mountRender({
-            cards: cards,
             untapClient: untapClient,
             username: "some-user",
             onPickCompleted: spyFunc
         });
+        await getPackPromise;
+        subject.update();
 
         expect(spyFunc).not.toHaveBeenCalled();
 
@@ -107,13 +124,12 @@ describe('CardPicker', () => {
         await pickCardPromise;
 
         expect(spyFunc).toHaveBeenCalled();
-    })
+    });
 });
 
 function mountRender(params = {}) {
     return mount(
         <CardPicker
-            cards={params.cards ? params.cards : []}
             untapClient={params.untapClient ? params.untapClient : new DummyUntapClient()}
             username={params.username ? params.username : ""}
             onPickCompleted={params.onPickCompleted ? params.onPickCompleted : () => {}}

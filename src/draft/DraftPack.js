@@ -2,30 +2,30 @@ import React, {Component} from "react"
 import "./Draft.css"
 import PropTypes from 'prop-types';
 import {UntapClientShape} from "../untap/Client"
-import {CardPickerWithCards} from "../pack/CardPicker"
+import {CardPicker} from "../pack/CardPicker"
 import {DraftedCards} from "../pack/DraftedCards"
 
 export class DraftPack extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            pickedCardsTrigger: false
+            pickCompleteToggle: false
         }
     }
 
     render() {
         return (
             <div className="DraftPack">
-                <CardPickerWithCards
+                <CardPicker
                     untapClient={this.props.untapClient}
                     username={this.props.username}
-                    onPickCompleted={() => this.setState({pickedCardsTrigger: !this.state.pickedCardsTrigger})}
+                    onPickCompleted={() => this.setState({pickCompleteToggle: !this.state.pickCompleteToggle})}
                 />
 
                 <DraftedCards
                     untapClient={this.props.untapClient}
                     username={this.props.username}
-                    triggerToggle={this.state.pickedCardsTrigger}
+                    triggerToggle={this.state.pickCompleteToggle}
                 />
             </div>
         )

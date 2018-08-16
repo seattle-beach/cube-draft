@@ -3,17 +3,18 @@ import "./Pack.css"
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {CardShape} from '../untap/Card'
+import {withCards} from "./WithCards";
 
 export class Pack extends Component {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             selectedCard: {name: "", image: ""}
         }
     }
 
     cardClick(card) {
-        this.setState({selectedCard: card})
+        this.setState({selectedCard: card});
 
         if (this.props.onCardClick) {
             this.props.onCardClick(card)
@@ -45,3 +46,5 @@ Pack.propTypes = {
     cards: PropTypes.arrayOf(CardShape).isRequired,
     onCardClick: PropTypes.func
 };
+
+export const PackWithCards = withCards(Pack);

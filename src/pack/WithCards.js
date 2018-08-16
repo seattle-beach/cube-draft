@@ -5,18 +5,18 @@ import PropTypes from 'prop-types';
 export const withCards = (WrappedComponent) => {
     const wrapped = class extends Component {
         constructor(props) {
-            super(props)
+            super(props);
             this.state = {
                 cards: [],
                 loading: true,
                 error: false,
             }
         }
-        
+
         componentDidMount() {
             this.props.untapClient.getPack(this.props.username).then((cards) => {
                 this.setState({cards: cards, loading: false});
-            }, (err) => {
+            }, () => {
                 this.setState({error: true, loading: false})
             })
         }
@@ -30,12 +30,12 @@ export const withCards = (WrappedComponent) => {
                 return <WrappedComponent cards={this.state.cards} {...this.props} />
             }
         }
-    }
+    };
 
     wrapped.propTypes = {
         untapClient: UntapClientShape.isRequired,
         username: PropTypes.string.isRequired,
-    }
+    };
 
     return wrapped
-}
+};
