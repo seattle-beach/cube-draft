@@ -2,7 +2,7 @@ describe('Drafting cards', () => {
     beforeEach(() => {
         cy.registerDrafter("first-drafter")
         cy.registerDrafter("second-drafter")
-    })
+    });
 
     it('lets 2 users draft', () => {
         // Draft can be started
@@ -14,31 +14,55 @@ describe('Drafting cards', () => {
             .get('body').should('contain', "Users drafting")
 
         // Drafters see different cards
-        var firstCards = []
-        var secondCards = []
+        var firstCards = [];
+        var secondCards = [];
 
         cy.visit('/draft/first-drafter').get('[data-cy=card]').each(($img) => {
-            firstCards.push($img.attr('src'))
+            firstCards.push($img.attr('alt'))
         }).visit('/draft/second-drafter').get('[data-cy=card]').each(($img) => {
-            secondCards.push($img.attr('src'))
+            secondCards.push($img.attr('alt'))
         }).then(() => {
             expect(firstCards).to.not.deep.equal(secondCards)
-        })
+        });
 
-        // Drafter can choose a card
-        let clickedCard
+        // Drafters can choose a card
+        let firstClickedCard;
+        let secondClickedCard;
 
+        // first drafter picks a card
         cy.visit('/draft/first-drafter')
             .get('[data-cy=drafted-card]').should('have.length', 0)
             .get('[data-cy=card]').should('have.length', 15)
             .get('[data-cy=card]:first-child').then(($card) => {
-                clickedCard = $card.attr('alt')
+                firstClickedCard = $card.attr('alt')
             }).click()
             .get('[data-cy=draft-selected-card]').click()
-            .visit('/draft/first-drafter')
             .get('[data-cy=drafted-card]').should('have.length', 1)
             .then(($cards) => {
-                expect($cards).to.contain(clickedCard)
+                const draftedCardNames = $cards.toArray().map(i => i.textContent);
+                expect(draftedCardNames).to.contain(firstClickedCard);
+            })
+
+            // second drafter picks a card
+            .visit('/draft/second-drafter')
+            .get('[data-cy=card]:first-child').then(($card) => {
+                secondClickedCard = $card.attr('alt')
+            }).click()
+            .get('[data-cy=draft-selected-card]').click()
+
+            // second drafter sees remaining 14 cards from first drafter
+            .get('[data-cy=card]').then(($cards) => {
+                const cardsPassed = firstCards.filter(item => item !== firstClickedCard);
+                const cardNames = $cards.toArray().map(i => i.alt);
+                expect(cardNames).to.deep.equal(cardsPassed)
+            })
+
+            // first drafter sees remaining 14 cards from second drafter
+            .visit('/draft/first-drafter')
+            .get('[data-cy=card]').then(($cards) => {
+                const cardsPassed = secondCards.filter(item => item !== secondClickedCard);
+                const cardNames = $cards.toArray().map(i => i.alt);
+                expect(cardNames).to.deep.equal(cardsPassed)
             })
     })
-})
+});

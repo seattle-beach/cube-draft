@@ -23,8 +23,9 @@ yarn-error.log*
 .vscode
 *.css
 
-#Cypress outputs videos
+#Cypress outputs videos and images
 *.mp4
+*.png
 
 .idea/
 *.iml
