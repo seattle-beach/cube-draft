@@ -8,17 +8,17 @@
     "react-scripts": "1.1.4"
   },
   "scripts": {
+    "eject": "react-scripts eject",
+    "build-css": "node-sass-chokidar src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "prebuild": "yarn build-css",
     "build": "react-scripts build && cp ./build_support/* ./build/",
     "start-js": "react-scripts start",
-    "pretest": "yarn build-css",
-    "test": "babel-node spec/run.js",
-    "integration-test": "cypress run",
-    "eject": "react-scripts eject",
     "prestart": "sudo apachectl start",
     "start": "HOST=cube-draft.localhost.dev npm-run-all -p watch-css start-js",
-    "build-css": "node-sass-chokidar src/ -o src/",
-    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive"
+    "pretest": "yarn build-css",
+    "test": "babel-node spec/run.js",
+    "test:e2e": "cypress run"
   },
   "devDependencies": {
     "axios": "^0.18.0",
