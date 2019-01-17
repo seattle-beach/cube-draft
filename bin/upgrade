@@ -1,0 +1,64 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const delim = '**************************************************************************************************'
+
+
+const
+    {spawn, spawnSync} = require('child_process'),
+    yarnOutdated = spawn('yarn', ['outdated', '--json']);
+
+yarnOutdated.stdout.on('data', stdout => {
+    const yarnOutput = JSON.parse(stdout)
+
+    if (yarnOutput.type === "info") {
+        return
+    }
+
+    const packages = yarnOutput.data.body
+
+    packages.forEach(p => {
+        const name = p[0]
+        const currentVersion = p[1]
+        const upgradeVersion = p[3]
+
+        console.log(delim)
+        console.log(`Upgrading package ${name} from ${currentVersion} to ${upgradeVersion}`);
+
+        const upgradeResult = spawnSync('yarn', ['upgrade', `${name}@${upgradeVersion}`]);
+        if (upgradeResult.status === 0) {
+            const test = spawnSync('yarn', ['test']);
+
+            if (test.status === 1) {
+                console.log(test.stdout.toString())
+                console.log(upgradeResult.stderr.toString())
+                console.log('UPGRADE ERROR:')
+                console.log(`Upgrade of package ${name} failed to upgrade from ${currentVersion} to ${upgradeVersion}`)
+            } else {
+                console.log(`Upgraded package ${name} from ${currentVersion} to ${upgradeVersion}`);
+            }
+        } else {
+            console.log(upgradeResult.stdout.toString())
+            console.log(upgradeResult.stderr.toString())
+            console.log('YARN UPDATE ERROR - Rolling back')
+            const rollbackResult = spawnSync('yarn', ['upgrade', `${name}@${currentVersion}`]);
+            if (rollbackResult.status !== 0) {
+                console.log('ROLLBACK FAILED!!!!!!!')
+            }
+        }
+
+
+        console.log(delim)
+    })
+
+
+});
+
+yarnOutdated.stderr.on('data', data => {
+    console.log(`stderr: ${data}`);
+});
+
+yarnOutdated.on('close', code => {
+    console.log(`child process exited with code ${code}`);
+});

@@ -17,7 +17,8 @@
     "prestart": "sudo apachectl start",
     "start": "HOST=cube-draft.localhost.dev npm-run-all -p watch-css start-js",
     "pretest": "yarn build-css",
-    "test": "babel-node spec/run.js",
+    "test": "yarn test:e2e && yarn test:unit",
+    "test:unit": "babel-node spec/run.js",
     "test:e2e": "cypress run"
   },
   "devDependencies": {
