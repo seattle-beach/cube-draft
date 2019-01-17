@@ -19,7 +19,8 @@
     "pretest": "yarn build-css",
     "test": "yarn test:e2e && yarn test:unit",
     "test:unit": "babel-node spec/run.js",
-    "test:e2e": "cypress run"
+    "test:e2e": "cypress run",
+    "test:e2e:open": "cypress open"
   },
   "devDependencies": {
     "axios": "0.18.0",
