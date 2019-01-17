@@ -17,6 +17,7 @@ yarnOutdated.stdout.on('data', stdout => {
     }
 
     const packages = yarnOutput.data.body
+    // const packages = [['wait-on', '2.1.0', '2.1.0', '3.2.0']]
 
     packages.forEach(p => {
         const name = p[0]
@@ -35,6 +36,11 @@ yarnOutdated.stdout.on('data', stdout => {
                 console.log(upgradeResult.stderr.toString())
                 console.log('UPGRADE ERROR:')
                 console.log(`Upgrade of package ${name} failed to upgrade from ${currentVersion} to ${upgradeVersion}`)
+                console.log('Rolling back....')
+                const rollbackResult = spawnSync('yarn', ['upgrade', `${name}@${currentVersion}`]);
+                if (rollbackResult.status !== 0) {
+                    console.log('ROLLBACK FAILED!!!!!!!')
+                }
             } else {
                 console.log(`Upgraded package ${name} from ${currentVersion} to ${upgradeVersion}`);
             }
