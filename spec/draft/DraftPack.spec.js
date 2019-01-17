@@ -7,20 +7,28 @@ import {DummyUntapClient} from "../support/DummyUntapClient"
 describe('DraftPack', () => {
     it('reloads drafted cards after picking a card successfully', async () => {
         const untapClient = new DummyUntapClient();
+
         const getPackPromise = Promise.resolve([DummyCard({id: 123, name: "A Card"})]);
+        untapClient.getPack = () => getPackPromise;
+
         const pickCardPromise = Promise.resolve();
+        untapClient.pickCard = () => pickCardPromise;
+
+        const pickedCardsFirstPromise = Promise.resolve([]);
+        const pickedCardsSecondPromise = Promise.resolve([DummyCard({id: 123, name: "A Card"})]);
         const pickedCardsSpy = jasmine.createSpy('pickedCards')
             .and.returnValues(
-                Promise.resolve([]),
-                Promise.resolve([DummyCard({id: 123, name: "A Card"})])
+                pickedCardsFirstPromise,
+                pickedCardsSecondPromise
             );
-
-        untapClient.getPack = () => getPackPromise;
-        untapClient.pickCard = () => pickCardPromise;
         untapClient.pickedCards = pickedCardsSpy;
 
+
         const subject = mountRender({untapClient: untapClient});
+
+
         await getPackPromise;
+        await pickedCardsFirstPromise;
         subject.update();
 
         const draftedCards = () => subject.find('[data-cy="drafted-card"]');
@@ -28,8 +36,8 @@ describe('DraftPack', () => {
 
         subject.find('img').first().simulate('click');
         subject.find('button').first().simulate('click');
-
         await pickCardPromise;
+        await pickedCardsSecondPromise;
         subject.update();
 
         expect(draftedCards().length).toEqual(1);

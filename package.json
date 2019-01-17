@@ -5,7 +5,7 @@
   "dependencies": {
     "react": "16.7.0",
     "react-dom": "16.7.0",
-    "react-scripts": "1.1.4"
+    "react-scripts": "2.0.3"
   },
   "scripts": {
     "eject": "react-scripts eject",
@@ -23,10 +23,13 @@
     "test:e2e:open": "cypress open"
   },
   "devDependencies": {
+    "@babel/polyfill": "^7.2.5",
     "axios": "0.18.0",
     "babel": "6.23.0",
     "babel-cli": "6.26.0",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "6.24.1",
+    "babel-preset-react": "^6.24.1",
     "classnames": "2.2.6",
     "cypress": "3.1.4",
     "enzyme": "3.8.0",
@@ -44,5 +47,11 @@
     "react-router": "4.3.1",
     "react-router-dom": "4.3.1",
     "wait-on": "3.2.0"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
